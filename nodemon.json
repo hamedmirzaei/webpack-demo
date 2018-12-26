@@ -1,0 +1,5 @@
+{
+    "watch": ["webpack.*.js", "nodemon.json", "src/", ".env"],
+    "ext": "js, css, env",
+    "ignore": ["node_modules/"]
+}
