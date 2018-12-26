@@ -10,22 +10,25 @@ const commonConfig = merge([
         title: "Webpack demo page",
       }),
     ],
-  },
-  parts.loadCSS(),
+  }
 ]);
 
-const productionConfig = merge([]);
+const productionConfig = merge([
+  parts.extractCSS({
+    use: "css-loader",
+  }),
+]);
 
 const developmentConfig = merge([
   parts.devServer({
     host: process.env.HOST, // Defaults to `localhost`
     port: process.env.PORT, // Defaults to 8080
   }),
+  parts.loadCSS(),
 ]);
 
 module.exports = env => {
   var mode = env.target;
-  console.log("mode is = " + mode)
   if (mode === "production") {
     return merge(commonConfig, productionConfig, { mode });
   }
