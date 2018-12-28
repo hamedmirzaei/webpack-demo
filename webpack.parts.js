@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PurifyCSSPlugin = require("purifycss-webpack");
 
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
@@ -45,3 +46,39 @@ exports.extractCSS = ({ include, exclude, use = [] }) => {
     plugins: [plugin],
   };
 };
+
+exports.purifyCSS = ({ paths }) => ({
+  plugins: [
+    new PurifyCSSPlugin({
+      paths,
+      purifyOptions: {
+        whitelist: ['*purify*'],
+        minify: true,
+        info: true,
+      }
+    })
+  ]
+});
+
+exports.autoprefix = () => ({
+  loader: "postcss-loader",
+  options: {
+    plugins: () => [require("autoprefixer")()],
+  },
+});
+
+exports.loadImages = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg)$/,
+        include,
+        exclude,
+        use: {
+          loader: "url-loader",
+          options,
+        },
+      },
+    ],
+  },
+});

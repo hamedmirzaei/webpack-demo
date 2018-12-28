@@ -3,6 +3,13 @@ const merge = require("webpack-merge");
 require('dotenv').config();
 const parts = require("./webpack.parts");
 
+const path = require("path");
+const glob = require("glob");
+
+const PATHS = {
+  app: path.join(__dirname, "src"),
+};
+
 const commonConfig = merge([
   {
     plugins: [
@@ -15,7 +22,16 @@ const commonConfig = merge([
 
 const productionConfig = merge([
   parts.extractCSS({
-    use: "css-loader",
+    use: ["css-loader", parts.autoprefix()],
+  }),
+  parts.purifyCSS({
+    paths: glob.sync(`${PATHS.app}/**/*.js`, { nodir: true }),
+  }),
+  parts.loadImages({
+    options: {
+      limit: 15000,
+      name: "[name].[ext]",
+    },
   }),
 ]);
 
@@ -25,6 +41,7 @@ const developmentConfig = merge([
     port: process.env.PORT, // Defaults to 8080
   }),
   parts.loadCSS(),
+  parts.loadImages(),
 ]);
 
 module.exports = env => {
