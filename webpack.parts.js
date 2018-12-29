@@ -27,7 +27,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
 exports.extractCSS = ({ include, exclude, use = [] }) => {
   // Output extracted CSS to a file
   const plugin = new MiniCssExtractPlugin({
-    filename: "[name].css",
+    filename: "./css/[name].css",
   });
 
   return {
@@ -76,6 +76,52 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
         exclude,
         use: {
           loader: "url-loader",
+          options,
+        },
+      },
+    ],
+  },
+});
+
+exports.loadFonts = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        // Match woff2 and patterns like .woff?v=1.1.1.
+        test: /\.(ttf|eot|woff|woff2)?(\?v=\d+\.\d+\.\d+)?$/,
+        include,
+        exclude,
+        use: {
+          loader: "url-loader",
+          options,
+        },
+      },
+    ],
+  },
+});
+
+exports.loadJavaScript = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include,
+        exclude,
+        use: "babel-loader",
+      },
+    ],
+  },
+});
+
+exports.loadTS = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        include,
+        exclude,
+        use: {
+          loader: "ts-loader",
           options,
         },
       },

@@ -1,0 +1,21 @@
+body {
+  background: cornsilk;
+
+  background-image: url("../images/logo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+
+.pure-button {
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
+}
+
+@font-face {
+  font-family: "BKoodakBold";
+  src: url("../fonts/BKoodakBold.woff") format("woff"),
+    url("../fonts/BKoodakBold.eot") format("embedded-opentype"),
+    url("../fonts/BKoodakBold.ttf") format("truetype");
+    /* Add other formats as you see fit */
+}
