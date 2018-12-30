@@ -1,22 +1,19 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 const merge = require("webpack-merge");
 require('dotenv').config();
 const parts = require("./webpack.parts");
 const path = require("path");
 const glob = require("glob");
 
-const outputDirectory = 'dist';
-
 const PATHS = {
   app: path.join(__dirname, "src"),
+  build: path.join(__dirname, "dist"),
 };
 
 const commonConfig = merge([
   {
     entry: ['@babel/polyfill', './src/index.js'],
     plugins: [
-      new CleanWebpackPlugin([outputDirectory]),
       new HtmlWebpackPlugin({
         title: "Webpack demo page",
       }),
@@ -26,6 +23,8 @@ const commonConfig = merge([
 ]);
 
 const productionConfig = merge([
+  parts.clean(PATHS.build),
+  parts.generateSourceMaps({ type: "source-map" }),
   parts.extractCSS({
     use: ["css-loader", parts.autoprefix()],
     options: {
@@ -57,6 +56,23 @@ const productionConfig = merge([
       publicPath: "../", // Take the directory into account
     },
   }),
+  {
+    output: {
+      chunkFilename: "chunk.[id].js",
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            chunks: "initial",
+            filename: "vendor.js",
+          },
+        },
+      },
+    },
+  },
+  parts.attachRevision(),
 ]);
 
 const developmentConfig = merge([
