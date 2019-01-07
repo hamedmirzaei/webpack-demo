@@ -1,8 +1,11 @@
 # webpack-demo
-This is just a simple test on `webpack` module
+This is just for learning purposes on `webpack` module
 ## Requirements
 
 Nodejs
 
-## Installation
-In the root directory first execute `npm install` and then `npm start`
+## Dependencies
+In the root directory execute `npm install`
+
+## Execution
+for development execute `npm start` and for production execute `npm run build`
